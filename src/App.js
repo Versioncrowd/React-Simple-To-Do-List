@@ -14,16 +14,23 @@ class App extends Component {
   
   submitHandler = (e) => {
     e.preventDefault();
-    this.setState((prevState) => {return {todoes: [...prevState.todoes, this.state.inputValue]}}
-      
-      )
-    console.log(this.state.todoes)
+    this.setState((prevState) => {
+      return {todoes: [...prevState.todoes, this.state.inputValue]}
+      })
   }
 
   updateInputValue = (e) => {
     e.preventDefault();
     this.setState({
       inputValue: e.target.value
+    })
+  }
+
+  clickHandler = (index) => {
+    let array = [...this.state.todoes];
+    array.splice(index,1);
+    this.setState({
+      todoes: array
     })
   }
 
@@ -37,8 +44,10 @@ class App extends Component {
             <input className="todoinput" type="text" placeholder="Add To Do Item" onChange={this.updateInputValue} />
             <button type="submit">Submit</button>
           </form>
-        </div>
-        <ToDoList todoes={this.state.todoes} />
+        </div>{this.state.todoes.map((todo, index) => {
+         return <ToDoList todo={todo} click={() => this.clickHandler(index)} index={index}/>
+        })}
+        
       </div>
     );
   }
